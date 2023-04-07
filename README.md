@@ -5,17 +5,18 @@ Send lines from your code buffer to a terminal buffer.
 
 # Basic usage pattern
 
-1. open a terminal buffer
-2. set up the terminal such that you just have to start typing the lines
-   you want to insert. This means if you use vi mode make sure you are
-   in insert mode!
+1. Open a terminal buffer.
+2. Set up the terminal such that you just have to start typing the lines
+   you want to insert - this means if you use vi-mode make sure you are
+   in insert-mode!
 3. If you have several terminal buffers loaded: From your code buffer
-   run `:SendlineConnect <term-bufnr>`
-4. Send current line `:Sendline`, or multiple by visually selecting them
-   and `:Sendline`
+   run `:SendlineConnect <term-bufnr>`.
+4. Send current line - or multiple lines by visually selecting (at least
+   parts of) them - with `:Sendline`. Actually you can send any range of
+   lines by specifying it with the usual notation, however, motions or
+   repeats do not work.
 
 # UserCommands
-
 ## `:[range]Sendline [bufnr]`
 Tries to send current line or all *lines* with visual selection
 to the terminal with
@@ -26,9 +27,11 @@ to the terminal with
 
 ## `:[range]Sendline! [bufnr]`
 Like :[range]Sendline but **does not**:
-    * save
-    * remove
-    * or override
+
+* save
+* remove
+* or override
+
 the connection.
 
 ## `:SendlineConnect [bufnr]`
@@ -41,10 +44,28 @@ Removes the given or current buffer's connection.
 
 # Tips
 ## Keymaps
+
 * Send current line and advance `:nnoremap <cr> <cmd>Sendline<cr>+`
 * Send unindented selection `vnoremap <cr> 100<gv:Sendline<cr>u`
 
-# Troubleshooting
-## IPython complains about indentation
-For now you need to either run ipython with `ipython --no-autoindent` or
-unindent before you send your lines. See: Tips>Keymaps for a helpful map
+# FAQ, Troubleshooting
+## My repl complains about indentation
+Unindent the lines before you send them (see: Tips>Keymaps for a helpful
+map to do so).
+
+* Ipython: you can just use the `--no-autoindent` flag
+
+## The plugin sends the whole line even tho I only selected part of it
+This is intended. I understand that this might be useful sometimes, but
+considering I'd have to handle all the different selection modes I
+decided to not implement this and rely on the simple tools at hand
+(user-commands and ranges).
+
+## Sendline sends a newline even when my line doesn't end in one
+Indeed, this is intended, because this plugin is made for executing
+lines in a repl running in a neovim terminal.
+
+## My repl needs n more newlines to run the code
+Include n trailing, empty lines in the lines you send or, after sending
+the code lines, send an empty line n times. If you use a mapping this
+shouldn't be a big problem.
