@@ -69,3 +69,8 @@ lines in a repl running in a neovim terminal.
 Include n trailing, empty lines in the lines you send or, after sending
 the code lines, send an empty line n times. If you use a mapping this
 shouldn't be a big problem.
+
+## I selected multiple lines but Sendline only sends the current line
+This could have happened because you used a mapping which uses
+`<cmd>Sendline`. Use `:` instead of `<cmd>` to capture your selected
+range.
