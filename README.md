@@ -1,3 +1,5 @@
+**USE AT YOUR OWN RISK**
+
 # About
 Send lines from your code buffer to a terminal buffer.
 
