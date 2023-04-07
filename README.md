@@ -26,7 +26,7 @@ to the terminal with
   * or tries to autoconnect.
 
 ## `:[range]Sendline! [bufnr]`
-Like :[range]Sendline but **does not**:
+Like `:[range]Sendline` but **does not**:
 
 * save
 * remove
