@@ -74,3 +74,7 @@ shouldn't be a big deal.
 This could have happened because you used a mapping which uses
 `<cmd>Sendline`. Use `:` instead of `<cmd>` to capture your selected
 range.
+
+## It doesn't scroll when more lines than fit on the screen are printed
+The neovim cursor position of the terminal window has to be at the last
+line of the terminal buffer. Navigate there with `G` in normal mode.
