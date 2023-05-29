@@ -1,7 +1,6 @@
 local M = {}
 
 local utils = require('sendline.utils')
-local levels = utils.levels
 
 ---@param buf? integer Terminal buffer number. If missing tries to autoconnect.
 ---@return boolean is_success
@@ -36,18 +35,18 @@ function M.connect(buf, opts)
             -- remove invalid connection:
             if not chan and not opts.once then
                 vim.b.sendlineChannel = nil
-                vim.notify('Sendline: Removed invalid connection!', levels.WARN)
+                utils.notify_warn('Sendline: Removed invalid connection!')
                 return false
             end
         elseif #terminals == 1 then
             -- buffer doesn't have a connection -> autoconnect to single terminal found
             chan = terminals[1].chan
-            vim.notify('Sendline: Connected to terminal in buffer ' .. terminals[1].buf, levels.INFO)
+            utils.notify_info('Sendline: Connected to terminal in buffer ' .. terminals[1].buf)
         end
     end
 
     if not chan then
-        vim.notify('Sendline: Could not connect...', levels.WARN)
+        utils.notify_warn('Sendline: Could not connect...')
         return false
     end
 
@@ -81,7 +80,7 @@ function M.send(opts)
     end
     local ok = pcall(vim.api.nvim_chan_send, chan, opts.text)
     if not ok then
-        vim.notify('Sendline Error: Failed to send lines for unknown reason', levels.ERROR)
+        utils.notify_error('Sendline Error: Failed to send lines for unknown reason')
         return false
     end
     return true

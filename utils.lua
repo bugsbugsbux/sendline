@@ -1,6 +1,20 @@
-local M = {
-    levels = vim.log.levels ---@type table<'DEBUG'|'ERROR'|'INFO'|'TRACE'|'WARN'|'OFF', number>
-}
+local M = {}
+
+---@param level 'DEBUG'|'ERROR'|'INFO'|'TRACE'|'WARN'|'OFF'
+---@return function(string)
+local function make_notifier(level)
+    ---@param msg string
+    return function(msg)
+        vim.notify(msg, vim.log.levels[level], {
+            title = "Sendline", -- used by nvim-notify
+        })
+    end
+end
+M.notify_debug = make_notifier('DEBUG')
+M.notify_error = make_notifier('ERROR')
+M.notify_info = make_notifier('INFO')
+M.notify_trace = make_notifier('TRACE')
+M.notify_warn = make_notifier('WARN')
 
 ---@return {chan: integer, buf: integer }[]
 function M.get_terminals()
@@ -37,12 +51,12 @@ function M.validate_fargs(cmd)
     -- check args
     local n = #cmd.fargs
     if n > 1 then
-        vim.notify('Sendline: ArgumentError - Only 0 or 1 arguments allowed!', M.levels.ERROR)
+        M.notify_error('Sendline: ArgumentError - Only 0 or 1 arguments allowed!')
         return false
     elseif n > 0 then
         local ok, buffer = pcall(tonumber, cmd.fargs[1])
         if not ok then
-            vim.notify("Sendline: ArgumentError - '" .. cmd.fargs[1] .. "' is not convertible to number!", M.levels.ERROR)
+            M.notify_error("Sendline: ArgumentError - '" .. cmd.fargs[1] .. "' is not convertible to number!")
             return false
         end
         return true, buffer
