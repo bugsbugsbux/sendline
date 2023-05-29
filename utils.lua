@@ -13,6 +13,23 @@ function M.get_terminals()
     return terminals
 end
 
+---@param opts? {as_string:boolean}
+---@return number[]|(string[])
+function M.get_senders(opts)
+    opts = opts or {}
+    local sendline_buffers = {} ---@type number[]|(string[])
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.b[buf].sendlineChannel then
+            if opts.as_string then
+                table.insert(sendline_buffers, tostring(buf))
+            else
+                table.insert(sendline_buffers, buf)
+            end
+        end
+    end
+    return sendline_buffers
+end
+
 ---@return boolean is_valid
 ---@return integer? buffer
 function M.validate_fargs(cmd)
