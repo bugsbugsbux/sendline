@@ -18,7 +18,7 @@ end
 ---@return string[]
 ---@diagnostic disable-next-line:unused-local
 function M.complete_sendline_buffers(arglead, cmdline, cur_byte_pos)
-    return utils.get_senders({as_string = true})
+    return prepare_candidates(utils.get_senders({as_string = true}), arglead)
 end
 
 ---@param arglead string Leading part of current word
