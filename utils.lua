@@ -56,7 +56,11 @@ function M.validate_fargs(cmd)
     elseif n > 0 then
         local buffer = tonumber(cmd.fargs[1])
         if not buffer then
-            M.notify_error("Sendline: ArgumentError - '" .. cmd.fargs[1] .. "' is not convertible to number!")
+            M.notify_error(
+                "Sendline: ArgumentError - '"
+                .. cmd.fargs[1]
+                .. "' is not convertible to number!"
+            )
             return false, nil
         end
         return true, buffer

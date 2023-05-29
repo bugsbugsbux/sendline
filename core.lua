@@ -41,7 +41,10 @@ function M.connect(buf, opts)
         elseif #terminals == 1 then
             -- buffer doesn't have a connection -> autoconnect to single terminal found
             chan = terminals[1].chan
-            utils.notify_info('Sendline: Connected to terminal in buffer ' .. terminals[1].buf)
+            utils.notify_info(
+                'Sendline: Connected to terminal in buffer '
+                .. terminals[1].buf
+            )
         end
     end
 
