@@ -18,18 +18,22 @@ function M.complete_sendline_buffers(arglead, cmdline, cur_byte_pos)
     return buffers
 end
 
+---@param arglead string Leading part of current word
+---@param cmdline string Entire commandline
+---@param curbytepos number Cursor position in commandline
 ---@return string[]
 function M.complete_term_buffers(arglead, cmdline, curbytepos) ---@diagnostic disable-line:unused-local
-    local buffers = {}
+    local term_bufs = {} ---@type string[]
     for _, term in ipairs(utils.get_terminals()) do
-        table.insert(buffers, tostring(term.buf))
+        table.insert(term_bufs, tostring(term.buf))
     end
-    ---@type nil|number
-    local first_space = string.find(cmdline, ' ', 1, true)
-    if first_space and curbytepos >= first_space then
-        return buffers
+    local candidates = {} ---@type string[]
+    for _, buf in ipairs(term_bufs) do
+        if vim.startswith(buf, arglead) and #buf > #arglead then
+            table.insert(candidates, string.sub(buf, #arglead + 1))
+        end
     end
-    return {}
+    return candidates
 end
 
 return M
