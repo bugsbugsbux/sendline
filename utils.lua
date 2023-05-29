@@ -52,12 +52,12 @@ function M.validate_fargs(cmd)
     local n = #cmd.fargs
     if n > 1 then
         M.notify_error('Sendline: ArgumentError - Only 0 or 1 arguments allowed!')
-        return false
+        return false, nil
     elseif n > 0 then
-        local ok, buffer = pcall(tonumber, cmd.fargs[1])
-        if not ok then
+        local buffer = tonumber(cmd.fargs[1])
+        if not buffer then
             M.notify_error("Sendline: ArgumentError - '" .. cmd.fargs[1] .. "' is not convertible to number!")
-            return false
+            return false, nil
         end
         return true, buffer
     end
