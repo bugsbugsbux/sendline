@@ -16,20 +16,19 @@ function M.connect(buf, opts)
     local chan ---@type integer|nil
     local terminals = utils.get_terminals() ---@type integer[]
     if buf then
-        -- given buffer needs to be terminal
+        -- needs to be terminal
         for _, term in ipairs(terminals) do
             if term.buf == buf then
                 chan = term.chan
-                break
+                break -- fail later
             end
         end
-    else
-        -- buffer is connected:
-        if vim.b.sendlineChannel then
+    else -- get connection from current buffer
+        if vim.b.sendlineChannel then -- buffer already connected
             for _, term in ipairs(terminals) do
                 if term.chan == vim.b.sendlineChannel then
                     chan = term.chan
-                    break
+                    break -- fail later
                 end
             end
             -- remove invalid connection:
@@ -38,8 +37,7 @@ function M.connect(buf, opts)
                 utils.notify_warn('Sendline: Removed invalid connection!')
                 return false
             end
-        elseif #terminals == 1 then
-            -- buffer doesn't have a connection -> autoconnect to single terminal found
+        elseif #terminals == 1 then -- autoconnect to only terminal found
             chan = terminals[1].chan
             utils.notify_info(
                 'Sendline: Connected to terminal in buffer '
