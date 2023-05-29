@@ -2,6 +2,19 @@ local M = {}
 
 local utils = require('sendline.utils')
 
+---@param candidates string[]
+---@param prefix string
+---@return string[]
+local function prepare_candidates(candidates, prefix)
+    local filtered = {} ---@type string[]
+    for _, candidate in ipairs(candidates) do
+        if vim.startswith(candidate, prefix) and #candidate > #prefix then
+            table.insert(filtered, string.sub(candidate, #prefix + 1))
+        end
+    end
+    return filtered
+end
+
 ---@return string[]
 ---@diagnostic disable-next-line:unused-local
 function M.complete_sendline_buffers(arglead, cmdline, cur_byte_pos)
@@ -27,13 +40,7 @@ function M.complete_term_buffers(arglead, cmdline, curbytepos) ---@diagnostic di
     for _, term in ipairs(utils.get_terminals()) do
         table.insert(term_bufs, tostring(term.buf))
     end
-    local candidates = {} ---@type string[]
-    for _, buf in ipairs(term_bufs) do
-        if vim.startswith(buf, arglead) and #buf > #arglead then
-            table.insert(candidates, string.sub(buf, #arglead + 1))
-        end
-    end
-    return candidates
+    return prepare_candidates(term_bufs, arglead)
 end
 
 return M
