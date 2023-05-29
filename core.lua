@@ -13,8 +13,12 @@ function M.connect(buf, opts)
         ['opts.once'] = { opts.once, 'boolean', true },
     })
 
-    local chan ---@type integer|nil
     local terminals = utils.get_terminals() ---@type integer[]
+    if #terminals == 0 then
+        utils.notify_warn('Sendline: Could not connect...')
+        return false -- fail early
+    end
+    local chan ---@type integer|nil
     if buf then
         -- needs to be terminal
         for _, term in ipairs(terminals) do
