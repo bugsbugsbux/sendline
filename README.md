@@ -2,6 +2,7 @@
 
 # About
 Send lines from your code buffer to a terminal buffer.
+![sendline-demo](https://github.com/herrvonvoid/sendline/assets/46503017/332fad70-aa2c-4ecc-abf6-b394e433eccc)
 
 # Basic usage pattern
 
