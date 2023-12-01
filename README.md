@@ -11,7 +11,7 @@ Send lines from your code buffer to a terminal buffer.
    you want to insert - this means if you use vi-mode make sure you are
    in insert-mode!
 3. If you have several terminal buffers loaded: From your code buffer
-   run `:SendlineConnect <term-bufnr>`.
+   run `:SendlineConnect <term-bufnr>` to set the intended target.
 4. Send current line - or multiple lines by visually selecting (at least
    parts of) them - with `:Sendline`. Actually you can send any range of
    lines by specifying it with the usual notation, however, motions or
@@ -36,9 +36,8 @@ Like `:[range]Sendline` but **does not**:
 the connection.
 
 ## `:SendlineConnect [bufnr]`
-Assign a specific channel (for `vim.api.nvim_chan_send`) to the (code)
-buffer, which will be used to send lines if no explicit target was
-given.
+Set the target terminal for the current buffer. It will be used when
+`:Sendline` is called without an explicit target.
 
 ## `:SendlineDisconnect [bufnr]`
 Removes the given or current buffer's connection.
