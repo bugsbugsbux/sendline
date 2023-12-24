@@ -1,36 +1,25 @@
+local config = require('sendline.config')
+local cmds = require('sendline.cmds')
+local auto = require('sendline.auto')
+
 local M = {
-    send = require('sendline.core').send,
-    connect = require('sendline.core').connect,
+    get_connection = require('sendline.core').get_connection,
     disconnect = require('sendline.core').disconnect,
+    send = require('sendline.core').send,
+    show_config = function() vim.print(require('sendline.config').get()) end
 }
 
-local cmd_send = require('sendline.cmds').send
-local cmd_connect = require('sendline.cmds').connect
-local cmd_disconnect = require('sendline.cmds').disconnect
-local complete_term_buffers = require('sendline.completion').complete_term_buffers
-local complete_sendline_buffers = require('sendline.completion').complete_sendline_buffers
+function M.setup(overrides)
+    config.setup(overrides)
+    cmds.enable()
+    if config.get('autodisconnect') then
+        auto.enable()
+    end
+end
 
-vim.api.nvim_create_user_command('Sendline', function(cmd)
-    cmd_send(cmd)
-end, {
-    nargs = '*', -- '?' would accept everything as 1 arg. '*' splits on \s*
-    complete = complete_term_buffers,
-    range = true, -- to be able to send multiple lines
-    bang = true, -- I want to use it to allow sending once without persisting a connection
-})
-
-vim.api.nvim_create_user_command('SendlineConnect', function(cmd)
-    cmd_connect(cmd)
-end, {
-    nargs = '*', -- '?' would accept everything as 1 arg. '*' splits on \s*
-    complete = complete_term_buffers,
-})
-
-vim.api.nvim_create_user_command('SendlineDisconnect', function(cmd)
-    cmd_disconnect(cmd)
-end, {
-    nargs = '*', -- '?' would accept everything as 1 arg. '*' splits on \s*
-    complete = complete_sendline_buffers,
-})
+function M.disable()
+    cmds.disable()
+    auto.disable()
+end
 
 return M
