@@ -102,7 +102,7 @@ The neovim cursor position of the terminal window has to be at the last
 line of the terminal buffer. Navigate there with `G` in normal mode.
 
 ## Issues with the confirmation dialog
-The confirmation dialog receives all characters after the <CR> in your
+The confirmation dialog receives all characters after the \<CR> in your
 mapping (for example this `:Sendline<CR>+` would send "+" to the
 confirmation dialog). To avoid this use a different mapping in terminal
 buffers.
