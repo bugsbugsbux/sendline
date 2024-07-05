@@ -1,0 +1,9 @@
+[ ] SendlineToggleAutoconnect
+[ ] rectangular selection (incl part of line)
+[ ] make newline at end of payload optional
+[ ] filters
+    modify payload before sending it to terminal
+[ ] import change:
+    copy the change in the terminal buffer to a register
+    - is there a way to monitor when the invoked process is done?
+    - remember last payload and copy from there on request
